@@ -1,4 +1,4 @@
-11.21 AKS에 Spring Boot 애플리케이션 배포
+# 11.21 AKS에 Spring Boot 애플리케이션 배포
 
 ** 사전 요구 사항
 - Install Docker Desktop
@@ -12,38 +12,38 @@
 [ https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-kubernetes]
 
 
-# 디렉토리 만들기 및 이동
+① 디렉토리 만들기 및 이동
  mkdir C:\SpringBoot
  cd C:\SpringBoot
 
-# Spring Boot on Docker 샘플 복제
+② Spring Boot on Docker 샘플 복제
  git clone https://github.com/spring-guides/gs-spring-boot-docker.git
 
-# 이동
+③ 이동
  cd gs-spring-boot-docker
  cd complete
 
-# Maven을 사용하여 샘플 앱을 빌드하고 실행
+④ Maven을 사용하여 샘플 앱을 빌드하고 실행
  mvn package spring-boot:run
 
-# 웹앱 테스트
+⑤ 웹앱 테스트
  curl http://localhost:8080
 
-# pom.xml 수정
+⑥ pom.xml 수정
 
-# 이미지 빌드 및 레지스트리 푸시
+⑦ 이미지 빌드 및 레지스트리 푸시
  az acr login && mvn compile jib:build
 
-# AKS 로그인
+⑧ AKS 로그인
  az aks get-credentials --resource-group=<resource_group_name> --name=<aks_cluster_name>
 
-# AKS 클러스터에서 ACR 이미지를 받아 컨테이너 실행
+⑨ AKS 클러스터에서 ACR 이미지를 받아 컨테이너 실행
  kubectl run gs-spring-boot-docker --image=sjleeacr.azurecr.io/spring-boot-docker-complete:latest
 
-# 서비스 이름, 앱에 액세스하는 데 사용되는 공용 TCP 포트 및 앱이 수신 대기하는 내부 대상 포트를 지정
+⑩ 서비스 이름, 앱에 액세스하는 데 사용되는 공용 TCP 포트 및 앱이 수신 대기하는 내부 대상 포트를 지정
  kubectl expose pod gs-spring-boot-docker --type=ClusterIP --port=80 --target-port=8080
 
-# 인그레스 작업 ?
+⑪ 인그레스 작업 ?
  kubectl apply -f spring.yaml
 
 ---
@@ -66,6 +66,6 @@ spec:
               number: 80
         pathType: Exact
 
-# 앱게이트웨이 주소 연결 및 확인
+⑫ 앱게이트웨이 주소 연결 및 확인
 
 
